@@ -5,37 +5,75 @@ interface ConfettiPiece {
   left: number;
   delay: number;
   duration: number;
-  color: string;
+  hue: number;
   size: number;
   rotation: number;
+  shape: 'circle' | 'square' | 'triangle';
 }
-
-const colors = [
-  "hsl(43, 74%, 49%)", // gold
-  "hsl(350, 60%, 85%)", // rose
-  "hsl(43, 80%, 65%)", // gold light
-  "hsl(350, 45%, 50%)", // rose dark
-  "hsl(40, 50%, 90%)", // champagne
-];
 
 export const Confetti = () => {
   const [pieces, setPieces] = useState<ConfettiPiece[]>([]);
 
   useEffect(() => {
+    const shapes: ('circle' | 'square' | 'triangle')[] = ['circle', 'square', 'triangle'];
     const newPieces: ConfettiPiece[] = [];
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 60; i++) {
       newPieces.push({
         id: i,
         left: Math.random() * 100,
         delay: Math.random() * 5,
         duration: 3 + Math.random() * 4,
-        color: colors[Math.floor(Math.random() * colors.length)],
+        hue: Math.random() * 360,
         size: 8 + Math.random() * 12,
         rotation: Math.random() * 360,
+        shape: shapes[Math.floor(Math.random() * shapes.length)],
       });
     }
     setPieces(newPieces);
   }, []);
+
+  const getShape = (piece: ConfettiPiece) => {
+    const color = `hsl(${piece.hue}, 70%, 60%)`;
+    
+    switch (piece.shape) {
+      case 'circle':
+        return (
+          <div
+            style={{
+              width: piece.size,
+              height: piece.size,
+              backgroundColor: color,
+              borderRadius: '50%',
+            }}
+          />
+        );
+      case 'square':
+        return (
+          <div
+            style={{
+              width: piece.size,
+              height: piece.size,
+              backgroundColor: color,
+              borderRadius: '2px',
+              transform: `rotate(${piece.rotation}deg)`,
+            }}
+          />
+        );
+      case 'triangle':
+        return (
+          <div
+            style={{
+              width: 0,
+              height: 0,
+              borderLeft: `${piece.size / 2}px solid transparent`,
+              borderRight: `${piece.size / 2}px solid transparent`,
+              borderBottom: `${piece.size}px solid ${color}`,
+              transform: `rotate(${piece.rotation}deg)`,
+            }}
+          />
+        );
+    }
+  };
 
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-50">
@@ -49,15 +87,7 @@ export const Confetti = () => {
             animationDuration: `${piece.duration}s`,
           }}
         >
-          <div
-            style={{
-              width: piece.size,
-              height: piece.size,
-              backgroundColor: piece.color,
-              transform: `rotate(${piece.rotation}deg)`,
-              borderRadius: Math.random() > 0.5 ? "50%" : "2px",
-            }}
-          />
+          {getShape(piece)}
         </div>
       ))}
     </div>

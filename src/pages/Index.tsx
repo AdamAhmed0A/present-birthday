@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import { Confetti } from "@/components/Confetti";
-import { Sparkles } from "@/components/Sparkles";
-import { FloatingBalloons } from "@/components/FloatingBalloons";
+import { InteractiveSparkles } from "@/components/InteractiveSparkles";
+import { FlowingBalloons } from "@/components/FlowingBalloons";
 import { HeroSection } from "@/components/HeroSection";
 import { MessageSection } from "@/components/MessageSection";
-import { WishesSection } from "@/components/WishesSection";
+import { CakeSection } from "@/components/CakeSection";
 import { FinalSection } from "@/components/FinalSection";
 
 const Index = () => {
   const [showConfetti, setShowConfetti] = useState(true);
 
   useEffect(() => {
-    // Stop confetti after 10 seconds
-    const timer = setTimeout(() => setShowConfetti(false), 10000);
+    // Stop confetti after 12 seconds
+    const timer = setTimeout(() => setShowConfetti(false), 12000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -20,13 +20,13 @@ const Index = () => {
     <main className="relative overflow-x-hidden">
       {/* Background effects */}
       {showConfetti && <Confetti />}
-      <Sparkles />
-      <FloatingBalloons />
+      <InteractiveSparkles />
+      <FlowingBalloons />
 
       {/* Content sections */}
       <HeroSection />
       <MessageSection />
-      <WishesSection />
+      <CakeSection />
       <FinalSection />
     </main>
   );
