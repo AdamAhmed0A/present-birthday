@@ -45,12 +45,16 @@
     --cream: 30 30% 96%;
     --champagne: 40 50% 90%;
     --burgundy: 350 60% 25%;
+    --pink-vibrant: 330 80% 65%;
+    --coral: 16 80% 65%;
+    --peach: 30 80% 75%;
 
     /* Gradients */
     --gradient-gold: linear-gradient(135deg, hsl(43 80% 65%) 0%, hsl(43 74% 49%) 50%, hsl(35 70% 45%) 100%);
     --gradient-rose: linear-gradient(135deg, hsl(350 60% 90%) 0%, hsl(350 60% 85%) 100%);
     --gradient-shimmer: linear-gradient(110deg, transparent 25%, hsl(43 80% 75% / 0.3) 50%, transparent 75%);
     --gradient-hero: radial-gradient(ellipse at center top, hsl(40 50% 92%) 0%, hsl(30 30% 96%) 70%);
+    --gradient-rainbow: linear-gradient(90deg, hsl(350 70% 70%), hsl(30 80% 65%), hsl(43 80% 60%), hsl(170 60% 50%), hsl(250 60% 70%), hsl(320 70% 65%));
 
     /* Shadows */
     --shadow-gold: 0 4px 30px hsl(43 74% 49% / 0.25);
@@ -147,6 +151,15 @@
     background-clip: text;
   }
 
+  .text-gradient-rainbow {
+    background: var(--gradient-rainbow);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: rainbow-shift 4s linear infinite;
+  }
+
   .bg-gradient-gold {
     background: var(--gradient-gold);
   }
@@ -171,17 +184,14 @@
     box-shadow: var(--shadow-elegant);
   }
 
-  .shimmer {
-    position: relative;
-    overflow: hidden;
+  @keyframes rainbow-shift {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
   }
 
-  .shimmer::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--gradient-shimmer);
-    animation: shimmer 3s infinite;
+  @keyframes hue-rotate {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(360deg); }
   }
 
   @keyframes shimmer {
@@ -197,6 +207,25 @@
   @keyframes float-slow {
     0%, 100% { transform: translateY(0) rotate(0deg); }
     50% { transform: translateY(-30px) rotate(-3deg); }
+  }
+
+  @keyframes balloon-rise {
+    0% { 
+      transform: translateY(100vh) rotate(0deg);
+      opacity: 0;
+    }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { 
+      transform: translateY(-120vh) rotate(20deg);
+      opacity: 0;
+    }
+  }
+
+  @keyframes balloon-sway {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(15px); }
+    75% { transform: translateX(-15px); }
   }
 
   @keyframes sparkle {
@@ -231,6 +260,39 @@
     75% { transform: scale(1.05); }
   }
 
+  @keyframes candle-flicker {
+    0%, 100% { transform: scaleY(1) scaleX(1); opacity: 1; }
+    25% { transform: scaleY(1.1) scaleX(0.9); opacity: 0.9; }
+    50% { transform: scaleY(0.9) scaleX(1.1); opacity: 1; }
+    75% { transform: scaleY(1.05) scaleX(0.95); opacity: 0.85; }
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% { 
+      filter: drop-shadow(0 0 8px hsl(43 90% 60%)) drop-shadow(0 0 20px hsl(30 90% 50%));
+    }
+    50% { 
+      filter: drop-shadow(0 0 15px hsl(43 90% 70%)) drop-shadow(0 0 30px hsl(30 90% 60%));
+    }
+  }
+
+  @keyframes bounce-gentle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(-3deg); }
+    50% { transform: rotate(3deg); }
+  }
+
+  @keyframes color-cycle {
+    0% { filter: hue-rotate(0deg) saturate(1.2); }
+    33% { filter: hue-rotate(30deg) saturate(1.3); }
+    66% { filter: hue-rotate(-20deg) saturate(1.1); }
+    100% { filter: hue-rotate(0deg) saturate(1.2); }
+  }
+
   .animate-float {
     animation: float 4s ease-in-out infinite;
   }
@@ -261,5 +323,37 @@
 
   .animate-heart-beat {
     animation: heart-beat 1.5s ease-in-out infinite;
+  }
+
+  .animate-balloon-rise {
+    animation: balloon-rise var(--duration, 8s) linear infinite;
+  }
+
+  .animate-balloon-sway {
+    animation: balloon-sway 3s ease-in-out infinite;
+  }
+
+  .animate-candle-flicker {
+    animation: candle-flicker 0.5s ease-in-out infinite;
+  }
+
+  .animate-glow-pulse {
+    animation: glow-pulse 1.5s ease-in-out infinite;
+  }
+
+  .animate-bounce-gentle {
+    animation: bounce-gentle 2s ease-in-out infinite;
+  }
+
+  .animate-wiggle {
+    animation: wiggle 1s ease-in-out infinite;
+  }
+
+  .animate-hue-rotate {
+    animation: hue-rotate 10s linear infinite;
+  }
+
+  .animate-color-cycle {
+    animation: color-cycle 8s ease-in-out infinite;
   }
 }

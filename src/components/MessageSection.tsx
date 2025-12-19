@@ -3,6 +3,7 @@ import { Heart, Quote } from "lucide-react";
 
 export const MessageSection = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [hue, setHue] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -22,15 +23,42 @@ export const MessageSection = () => {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setHue(prev => (prev + 0.5) % 360);
+    }, 50);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section
       ref={sectionRef}
-      className="min-h-screen flex items-center justify-center px-4 py-20 bg-gradient-rose"
+      className="min-h-screen flex items-center justify-center px-4 py-20 relative overflow-hidden"
+      style={{
+        background: `linear-gradient(135deg, hsl(${350 + hue * 0.1}, 60%, 90%) 0%, hsl(${350 + hue * 0.05}, 60%, 85%) 100%)`
+      }}
     >
-      <div className="max-w-3xl mx-auto text-center">
+      {/* Floating hearts background */}
+      <div className="absolute inset-0 pointer-events-none">
+        {[...Array(6)].map((_, i) => (
+          <Heart
+            key={i}
+            className="absolute text-rose-dark/20 fill-rose-dark/20 animate-float"
+            style={{
+              left: `${10 + i * 15}%`,
+              top: `${20 + (i % 3) * 25}%`,
+              width: 30 + i * 5,
+              height: 30 + i * 5,
+              animationDelay: `${i * 0.5}s`,
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="max-w-3xl mx-auto text-center relative z-10">
         {/* Decorative quote */}
         <div className={`transition-all duration-700 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}>
-          <Quote className="w-16 h-16 text-gold mx-auto mb-8 opacity-50" />
+          <Quote className="w-16 h-16 text-gold mx-auto mb-8 opacity-50 animate-color-cycle" />
         </div>
 
         {/* Main message */}
@@ -58,9 +86,9 @@ export const MessageSection = () => {
 
         {/* Heart decoration */}
         <div className={`flex items-center justify-center gap-4 transition-all duration-1000 delay-800 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}>
-          <div className="h-px w-20 bg-gradient-to-r from-transparent to-gold" />
-          <Heart className="w-8 h-8 text-rose-dark fill-rose-dark animate-heart-beat" />
-          <div className="h-px w-20 bg-gradient-to-l from-transparent to-gold" />
+          <div className="h-px w-20 bg-gradient-to-r from-transparent to-gold animate-color-cycle" />
+          <Heart className="w-8 h-8 text-rose-dark fill-rose-dark animate-heart-beat cursor-pointer hover:scale-125 transition-transform" />
+          <div className="h-px w-20 bg-gradient-to-l from-transparent to-gold animate-color-cycle" />
         </div>
       </div>
     </section>
