@@ -1,13 +1,34 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useEffect, useState } from "react";
+import { Confetti } from "@/components/Confetti";
+import { Sparkles } from "@/components/Sparkles";
+import { FloatingBalloons } from "@/components/FloatingBalloons";
+import { HeroSection } from "@/components/HeroSection";
+import { MessageSection } from "@/components/MessageSection";
+import { WishesSection } from "@/components/WishesSection";
+import { FinalSection } from "@/components/FinalSection";
 
 const Index = () => {
+  const [showConfetti, setShowConfetti] = useState(true);
+
+  useEffect(() => {
+    // Stop confetti after 10 seconds
+    const timer = setTimeout(() => setShowConfetti(false), 10000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <main className="relative overflow-x-hidden">
+      {/* Background effects */}
+      {showConfetti && <Confetti />}
+      <Sparkles />
+      <FloatingBalloons />
+
+      {/* Content sections */}
+      <HeroSection />
+      <MessageSection />
+      <WishesSection />
+      <FinalSection />
+    </main>
   );
 };
 
